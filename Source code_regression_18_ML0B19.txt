@@ -1,0 +1,45 @@
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+
+# Load the dataset
+path = r"E:\aquacrop\GUI_AC71\Jashore 2022-04-01 to 2024-10-01.csv"
+df = pd.read_csv(path)
+#Check missing value
+print("Missing Values before imputation:")
+print(df.isnull().sum())
+
+# Define independent (x) and dependent (y) variables
+x = df.iloc[:, [-5]].values
+y = df.iloc[:, 10].values
+
+print("Independent Variables (x)=",x)
+print("Dependent Variables (y)=",y)
+
+#Split the dataset into training and testing sets
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+
+#Fit the Linear Regression model
+regressor = LinearRegression()
+regressor.fit(x_train, y_train)
+
+# Predict on the test set
+y_predict = regressor.predict(x_test)
+
+#Display original and predicted values
+print("\nOriginal values (y_test):", y_test[:5])
+print("\nPredicted values (y_predict):", y_predict[:5])
+
+# Visualize the results
+plt.scatter(x_train, y_train, color="yellow", label="Training Data")
+plt.plot(x_train, regressor.predict(x_train), color="red", label="Regression Line")
+plt.scatter(x_test, y_test, color="green", label="Test Data")
+plt.title("Cloud_Cover vs Precipitation")
+plt.xlabel("Cloud_Cover(%)")
+plt.ylabel("Precipitation(mm)")
+#plt.legend()
+plt.show()
+plt.savefig=("sales by ship mode.png")
